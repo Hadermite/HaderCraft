@@ -4,5 +4,9 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 	
-	public static final BufferedImage TILE_DIRT = Loader.loadImage("/textures/blocks/dirt.png");
+	//Blocks
+	public static final BufferedImage BLOCK_DIRT = Loader.loadImage("/textures/blocks/dirt.png");
+	
+	//Sprites
+	public static final BufferedImage PLAYER = Loader.loadImage("/textures/sprites/player.png");
 }

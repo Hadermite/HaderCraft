@@ -64,4 +64,13 @@ public class Chunk {
 	public Rectangle getBounds() {
 		return bounds;
 	}
+	
+	public boolean containsCoord(double x, double y) {
+		int minX = xPos * SIZE;
+		int minY = yPos * SIZE;
+		int maxX = minX + SIZE * Block.SIZE;
+		int maxY = minY + SIZE * Block.SIZE;
+		
+		return x >= minX && x <= maxX && y >= minY && y <= maxY;
+	}
 }

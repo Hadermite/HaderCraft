@@ -7,7 +7,7 @@ public class Game {
 	private World world;
 	
 	public Game() {
-		world = new World(64);
+		world = new World();
 	}
 	
 	public void tick() {

@@ -3,32 +3,43 @@ package se.wiklund.minecraft2d.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.game.block.Block;
-import se.wiklund.minecraft2d.input.Keyboard;
+import se.wiklund.minecraft2d.game.entity.Entity;
+import se.wiklund.minecraft2d.game.entity.Player;
 
 public class World {
 
-	private int size;
-	private int sizeChunks;
-	private Chunk[] chunks;
+	public static final int HEIGHT = 256;
+	private static final int PRELOAD_CHUNKS = 16;
+	
+	private int chunksY;
+	private List<Chunk> chunks;
+	private List<Entity> entities;
+	private Player player;
 	private Camera camera;
 	private Rectangle screenBounds;
 
-	public World(int size) {
-		this.size = size;
-		sizeChunks = size / Chunk.SIZE;
-		chunks = new Chunk[sizeChunks * sizeChunks];
+	public World() {
+		chunksY = HEIGHT / Chunk.SIZE;
+		chunks = new ArrayList<>();
+		entities = new ArrayList<>();
+		player = new Player();
 		camera = new Camera();
 		screenBounds = new Rectangle();
-
-		for (int xPos = 0; xPos < sizeChunks; xPos++) {
-			for (int yPos = 0; yPos < sizeChunks; yPos++) {
-				chunks[xPos + yPos * sizeChunks] = new Chunk(xPos, yPos);
+		
+		for (int xPos = -PRELOAD_CHUNKS; xPos < PRELOAD_CHUNKS; xPos++) {
+			for (int yPos = 0; yPos < chunksY; yPos++) {
+				chunks.add(new Chunk(xPos, yPos));
 			}
 		}
+		
+		System.out.println("Preloaded " + chunks.size() + " chunks!");
+		
+		entities.add(player);
 	}
 
 	public void tick() {
@@ -37,24 +48,12 @@ public class World {
 				chunk.tick();
 			}
 		}
-
-		double x = camera.getX();
-		double y = camera.getY();
 		
-		if (Keyboard.isKeyDown(KeyEvent.VK_A)) {
-			x += 10;
-		}
-		if (Keyboard.isKeyDown(KeyEvent.VK_W)) {
-			y += 10;
-		}
-		if (Keyboard.isKeyDown(KeyEvent.VK_D)) {
-			x -= 10;
-		}
-		if (Keyboard.isKeyDown(KeyEvent.VK_S)) {
-			y -= 10;
+		for (Entity entity : entities) {
+			entity.tick();
 		}
 		
-		camera.tick(x, y);
+		camera.tick(player);
 
 		screenBounds.setBounds((int) -camera.getRenderOffsetX(), (int) -camera.getRenderOffsetY(), Main.WIDTH, Main.HEIGHT);
 	}
@@ -68,22 +67,28 @@ public class World {
 				g.draw(chunk.getBounds());
 			}
 		}
+		
+		for (Entity entity : entities) {
+			entity.render(g);
+		}
+		
 		g.translate(-camera.getRenderOffsetX(), -camera.getRenderOffsetY());
 	}
 
-	public void placeBlock(Block block, int xPos, int yPos) {
-		if (xPos < 0 || xPos >= size || yPos < 0 || yPos >= size) {
-			System.err.println("Tried to place a block outside of the world!");
-			return;
+	public void placeBlock(Block block, double x, double y) {
+		for (Chunk chunk : chunks) {
+			if (chunk.containsCoord(x, y)) {
+				chunk.placeBlock(block, (int) (x / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE), (int) (y / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE));
+			}
 		}
-		Chunk chunk = chunks[(xPos / Chunk.SIZE) + (yPos / Chunk.SIZE) * (size / Chunk.SIZE)];
-		chunk.placeBlock(block, xPos - (chunk.getXPos() * Chunk.SIZE), yPos - (chunk.getXPos() * Chunk.SIZE));
 	}
 
-	public Block getBlock(int xPos, int yPos) {
-		if (xPos < 0 || xPos >= size || yPos < 0 || yPos >= size)
-			return null;
-		Chunk chunk = chunks[(xPos / Chunk.SIZE) + (yPos / Chunk.SIZE) * (size / Chunk.SIZE)];
-		return chunk.getBlock(xPos - (chunk.getXPos() * Chunk.SIZE), yPos - (chunk.getXPos() * Chunk.SIZE));
+	public Block getBlock(double x, double y) {
+		for (Chunk chunk : chunks) {
+			if (chunk.containsCoord(x, y)) {
+				return chunk.getBlock((int) (x / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE), (int) (y / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE));
+			}
+		}
+		return null;
 	}
 }
