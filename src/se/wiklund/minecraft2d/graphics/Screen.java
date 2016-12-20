@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.game.Game;
 import se.wiklund.minecraft2d.input.Keyboard;
+import se.wiklund.minecraft2d.input.Mouse;
 
 public class Screen extends Canvas {
 
@@ -16,7 +17,11 @@ public class Screen extends Canvas {
 
 	public Screen() {
 		setPreferredSize(new Dimension((int) (Main.WIDTH * Main.SCALE), (int) (Main.HEIGHT * Main.SCALE)));
-
+		
+		Mouse mouse = new Mouse();
+		addMouseListener(mouse);
+		addMouseMotionListener(mouse);
+		addMouseWheelListener(mouse);
 		addKeyListener(new Keyboard());
 
 		game = new Game();

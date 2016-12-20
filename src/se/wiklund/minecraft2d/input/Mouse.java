@@ -7,7 +7,10 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 public class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener {
-
+	
+	private static double x, y;
+	private static boolean down;
+	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		
@@ -15,12 +18,14 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+		x = e.getX();
+		y = e.getY();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
+		x = e.getX();
+		y = e.getY();
 	}
 
 	@Override
@@ -40,11 +45,11 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+		down = true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+		down = false;
 	}
 }
