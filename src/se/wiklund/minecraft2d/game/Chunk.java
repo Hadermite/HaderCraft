@@ -23,7 +23,7 @@ public class Chunk {
 		
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
-				blocks[x + y * SIZE] = new Block(BlockType.DIRT, xPos + x, yPos + y);
+				blocks[x + y * SIZE] = new Block(BlockType.DIRT, xPos * SIZE + x, yPos * SIZE + y);
 			}
 		}
 	}

@@ -8,21 +8,24 @@ import java.awt.image.BufferStrategy;
 
 import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.game.Game;
+import se.wiklund.minecraft2d.input.Keyboard;
 
 public class Screen extends Canvas {
-	
+
 	private Game game;
-	
+
 	public Screen() {
 		setPreferredSize(new Dimension((int) (Main.WIDTH * Main.SCALE), (int) (Main.HEIGHT * Main.SCALE)));
-		
+
+		addKeyListener(new Keyboard());
+
 		game = new Game();
 	}
-	
+
 	public void tick() {
 		game.tick();
 	}
-	
+
 	public void render() {
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {
@@ -30,16 +33,17 @@ public class Screen extends Canvas {
 			requestFocusInWindow();
 			return;
 		}
-		
+
 		Graphics2D g = (Graphics2D) bs.getDrawGraphics();
 		g.scale(Main.SCALE, Main.SCALE);
-		//g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+		// Add to Settings. Default should be off because of performance. Maybe check system?
+		// g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
-		
+
 		game.render(g);
-		
+
 		g.dispose();
 		bs.show();
 	}
