@@ -1,6 +1,9 @@
 package se.wiklund.minecraft2d;
 
+import java.awt.Font;
 import java.awt.image.BufferedImage;
+
+import se.wiklund.minecraft2d.util.Loader;
 
 public class Assets {
 	
@@ -9,4 +12,7 @@ public class Assets {
 	
 	//Sprites
 	public static final BufferedImage PLAYER = Loader.loadImage("/textures/sprites/player.png");
+	
+	//Fonts
+	public static final Font FONT_SIDEBAR = Loader.loadFont("/fonts/comfortaa.ttf", 12);
 }

@@ -9,8 +9,10 @@ public class Main {
 	public static final double SCALE = 2;
 	public static final String NAME = "Minecraft2D";
 	
+	
 	private static Window window;
 	private static Screen screen;
+	private static int tps, fps;
 	
 	public static void start() {
 		window = new Window();
@@ -45,11 +47,20 @@ public class Main {
 			
 			if (timer + 1000000000 <= System.nanoTime()) {
 				timer += 1000000000;
-				window.setTitle(NAME + " | TPS: " + ticks + ", FPS: " + frames);
+				tps = ticks;
+				fps = frames;
 				ticks = 0;
 				frames = 0;
 			}
 		}
+	}
+	
+	public static int getTps() {
+		return tps;
+	}
+	
+	public static int getFps() {
+		return fps;
 	}
 	
 	public static void main(String[] args) {

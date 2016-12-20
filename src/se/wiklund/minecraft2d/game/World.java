@@ -37,8 +37,6 @@ public class World {
 			}
 		}
 		
-		System.out.println("Preloaded " + chunks.size() + " chunks!");
-		
 		entities.add(player);
 	}
 
