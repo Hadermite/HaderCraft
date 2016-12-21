@@ -9,9 +9,10 @@ import se.wiklund.minecraft2d.Main;
 public class Game {
 	
 	private World world;
+	private int sidebarY;
 	
 	public Game() {
-		world = new World();
+		world = new World(this);
 	}
 	
 	public void tick() {
@@ -19,11 +20,17 @@ public class Game {
 	}
 	
 	public void render(Graphics2D g) {
+		sidebarY = 15;
 		world.render(g);
 		
+		drawSidebarRow("TPS: " + Main.getTPS(), g);
+		drawSidebarRow("FPS: " + Main.getFPS(), g);
+	}
+	
+	public void drawSidebarRow(String text, Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.setFont(Assets.FONT_SIDEBAR);
-		g.drawString("TPS: " + Main.getTps(), 7, 15);
-		g.drawString("FPS: " + Main.getFps(), 7, 30);
+		g.drawString(text, 7, sidebarY);
+		sidebarY += 15;
 	}
 }

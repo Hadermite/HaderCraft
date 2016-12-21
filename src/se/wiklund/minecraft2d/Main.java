@@ -55,11 +55,11 @@ public class Main {
 		}
 	}
 	
-	public static int getTps() {
+	public static int getTPS() {
 		return tps;
 	}
 	
-	public static int getFps() {
+	public static int getFPS() {
 		return fps;
 	}
 	
