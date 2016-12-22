@@ -13,7 +13,7 @@ import se.wiklund.minecraft2d.game.entity.Player;
 
 public class World {
 
-	public static final int HEIGHT = 256;
+	public static final int HEIGHT = Chunk.SIZE * 16;
 	private static final int PRELOAD_CHUNKS = 16;
 
 	private Game game;

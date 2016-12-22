@@ -22,6 +22,15 @@ public class Block {
 	}
 	
 	public void render(Graphics2D g) {
-		g.drawImage(type.getTexture(), xPos * SIZE, yPos * SIZE, SIZE, SIZE, null);
+		if (type != null)
+			g.drawImage(type.getTexture(), xPos * SIZE, yPos * SIZE, SIZE, SIZE, null);
+	}
+	
+	public int getxPos() {
+		return xPos;
+	}
+	
+	public int getyPos() {
+		return yPos;
 	}
 }

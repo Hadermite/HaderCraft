@@ -52,4 +52,16 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	public void mouseReleased(MouseEvent e) {
 		down = false;
 	}
+	
+	public static double getX() {
+		return x;
+	}
+	
+	public static double getY() {
+		return y;
+	}
+	
+	public static boolean isDown() {
+		return down;
+	}
 }

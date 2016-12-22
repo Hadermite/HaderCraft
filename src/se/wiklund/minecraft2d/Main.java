@@ -7,6 +7,7 @@ public class Main {
 	
 	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9;
 	public static final double SCALE = 2;
+	public static final int TICKRATE = 64;
 	public static final String NAME = "Minecraft2D";
 	
 	
@@ -23,7 +24,7 @@ public class Main {
 	
 	private static void startLoop() {
 		
-		final double UPDATE_INTERVAL = 1000000000 / 64;
+		final double UPDATE_INTERVAL = 1000000000 / TICKRATE;
 		
 		long lastTime = System.nanoTime();
 		long timer = System.nanoTime();

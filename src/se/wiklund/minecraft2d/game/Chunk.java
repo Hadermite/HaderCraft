@@ -21,9 +21,12 @@ public class Chunk {
 		bounds = new Rectangle(xPos * SIZE * Block.SIZE, yPos * SIZE * Block.SIZE, SIZE * Block.SIZE, SIZE * Block.SIZE);
 		blocks = new Block[SIZE * SIZE];
 		
+		//Generate Blocks in the Chunk
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
-				blocks[x + y * SIZE] = new Block(BlockType.DIRT, xPos * SIZE + x, yPos * SIZE + y);
+				BlockType blockType = BlockType.DIRT;
+				if ((yPos * SIZE) + y <= World.HEIGHT / 2) blockType = null;
+				blocks[x + y * SIZE] = new Block(blockType, xPos * SIZE + x, yPos * SIZE + y);
 			}
 		}
 	}
