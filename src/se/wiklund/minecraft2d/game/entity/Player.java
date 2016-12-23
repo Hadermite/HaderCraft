@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 
 import se.wiklund.minecraft2d.Assets;
 import se.wiklund.minecraft2d.Main;
-import se.wiklund.minecraft2d.game.World;
 import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.input.Keyboard;
 
@@ -13,7 +12,7 @@ public class Player extends Entity {
 	private static final double SPEED = 10.0 / Main.TICKRATE;
 	
 	public Player() {
-		super(Assets.PLAYER, 0, World.HEIGHT / 2, Block.SIZE, Block.SIZE * 2);
+		super(Assets.PLAYER, 0, 126, Block.SIZE, Block.SIZE * 2);
 	}
 	
 	@Override

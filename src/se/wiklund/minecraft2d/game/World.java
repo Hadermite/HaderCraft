@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.java.swing.plaf.windows.resources.windows;
+
 import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.game.entity.Entity;
@@ -52,6 +54,12 @@ public class World {
 
 		for (Entity entity : entities) {
 			entity.tick();
+			
+			for (Chunk chunk : chunks) {
+				if (chunk.isEntityInside(entity)) {
+					//Check collision
+				}
+			}
 		}
 
 		camera.tick(player);
