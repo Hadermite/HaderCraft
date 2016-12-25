@@ -57,38 +57,44 @@ public class World {
 			Rectangle left = entity.getBoundsLeft();
 			Rectangle right = entity.getBoundsRight();
 			boolean inAir = true;
-			
+
 			for (Chunk chunk : chunks) {
 				if (chunk.isEntityInside(entity)) {
 					for (Block block : chunk.getBlocks()) {
-						if (block.getType() == null) continue;
+						if (block.getType() == null)
+							continue;
 						if (bottom.intersects(block.getBounds())) {
-							if (entity.getVelY() > 0) entity.setVelY(0);
+							if (entity.getVelY() > 0)
+								entity.setVelY(0);
 							inAir = false;
 							entity.setY(block.getY() - entity.getHeight() + 1);
 						}
 						if (top.intersects(block.getBounds())) {
-							if (entity.getVelY() < 0) entity.setVelY(0);
+							if (entity.getVelY() < 0)
+								entity.setVelY(0);
 							entity.setY(block.getY() + Block.SIZE);
 						}
 						if (left.intersects(block.getBounds())) {
-							if (entity.getVelX() < 0) entity.setVelX(0);
+							if (entity.getVelX() < 0)
+								entity.setVelX(0);
 							entity.setX(block.getX() + Block.SIZE);
 						}
 						if (right.intersects(block.getBounds())) {
-							if (entity.getVelX() > 0) entity.setVelX(0);
+							if (entity.getVelX() > 0)
+								entity.setVelX(0);
 							entity.setX(block.getX() - entity.getWidth());
 						}
 					}
 				}
 			}
-			
+
 			entity.setInAir(inAir);
 		}
-		
+
 		camera.tick(player);
 
-		screenBounds.setBounds((int) -camera.getRenderOffsetX(), (int) -camera.getRenderOffsetY(), Main.WIDTH, Main.HEIGHT);
+		screenBounds.setBounds((int) -camera.getRenderOffsetX(), (int) -camera.getRenderOffsetY(), Main.WIDTH,
+				Main.HEIGHT);
 	}
 
 	public void render(Graphics2D g) {
@@ -104,18 +110,19 @@ public class World {
 		for (Entity entity : entities) {
 			entity.render(g);
 		}
-		
+
 		g.translate(-camera.getRenderOffsetX(), -camera.getRenderOffsetY());
-		
+
 		game.drawSidebarRow("Player Coords (X, Y): " + player.getX() + ", " + player.getY(), g);
 	}
-	
+
 	public void onMouseClick(int button, int x, int y) {
 		double xt = x - camera.getRenderOffsetX();
 		double yt = y - camera.getRenderOffsetY();
 		Block block = getBlock(xt, yt);
-		if (block == null) return;
-		
+		if (block == null)
+			return;
+
 		block.setType(null);
 	}
 
@@ -129,7 +136,6 @@ public class World {
 	}
 
 	public Block getBlock(double x, double y) {
-		System.out.println(x + ", " + y);
 		for (Chunk chunk : chunks) {
 			if (chunk.containsCoord(x, y)) {
 				return chunk.getBlock((int) (x / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE),
