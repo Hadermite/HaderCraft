@@ -1,7 +1,6 @@
 package se.wiklund.minecraft2d.game;
 
 import se.wiklund.minecraft2d.Main;
-import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.game.entity.Entity;
 
 public class Camera {
@@ -17,8 +16,8 @@ public class Camera {
 	}
 	
 	public void tick(Entity entity) {
-		this.x = entity.getX() * Block.SIZE;
-		this.y = entity.getY() * Block.SIZE;
+		this.x = entity.getX();
+		this.y = entity.getY();
 		this.renderOffsetX = (Main.WIDTH / 2) - x - (entity.getWidth() / 2);
 		this.renderOffsetY = (Main.HEIGHT / 2) - y - (entity.getHeight() / 2);
 	}

@@ -7,13 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
 import se.wiklund.minecraft2d.Main;
-import se.wiklund.minecraft2d.game.Game;
 import se.wiklund.minecraft2d.input.Keyboard;
 import se.wiklund.minecraft2d.input.Mouse;
 
 public class Screen extends Canvas {
-
-	private Game game;
 
 	public Screen() {
 		setPreferredSize(new Dimension((int) (Main.WIDTH * Main.SCALE), (int) (Main.HEIGHT * Main.SCALE)));
@@ -23,12 +20,10 @@ public class Screen extends Canvas {
 		addMouseMotionListener(mouse);
 		addMouseWheelListener(mouse);
 		addKeyListener(new Keyboard());
-
-		game = new Game();
 	}
 
 	public void tick() {
-		game.tick();
+		Main.getState().tick();
 	}
 
 	public void render() {
@@ -46,9 +41,9 @@ public class Screen extends Canvas {
 
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
-
-		game.render(g);
-
+		
+		Main.getState().render(g);
+		
 		g.dispose();
 		bs.show();
 	}

@@ -6,8 +6,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.java.swing.plaf.windows.resources.windows;
-
 import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.game.entity.Entity;
@@ -54,14 +52,40 @@ public class World {
 
 		for (Entity entity : entities) {
 			entity.tick();
+			Rectangle bottom = entity.getBoundsBottom();
+			Rectangle top = entity.getBoundsTop();
+			Rectangle left = entity.getBoundsLeft();
+			Rectangle right = entity.getBoundsRight();
+			boolean inAir = true;
 			
 			for (Chunk chunk : chunks) {
 				if (chunk.isEntityInside(entity)) {
-					//Check collision
+					for (Block block : chunk.getBlocks()) {
+						if (block.getType() == null) continue;
+						if (bottom.intersects(block.getBounds())) {
+							if (entity.getVelY() > 0) entity.setVelY(0);
+							inAir = false;
+							entity.setY(block.getY() - entity.getHeight() + 1);
+						}
+						if (top.intersects(block.getBounds())) {
+							if (entity.getVelY() < 0) entity.setVelY(0);
+							entity.setY(block.getY() + Block.SIZE);
+						}
+						if (left.intersects(block.getBounds())) {
+							if (entity.getVelX() < 0) entity.setVelX(0);
+							entity.setX(block.getX() + Block.SIZE);
+						}
+						if (right.intersects(block.getBounds())) {
+							if (entity.getVelX() > 0) entity.setVelX(0);
+							entity.setX(block.getX() - entity.getWidth());
+						}
+					}
 				}
 			}
+			
+			entity.setInAir(inAir);
 		}
-
+		
 		camera.tick(player);
 
 		screenBounds.setBounds((int) -camera.getRenderOffsetX(), (int) -camera.getRenderOffsetY(), Main.WIDTH, Main.HEIGHT);
@@ -80,10 +104,19 @@ public class World {
 		for (Entity entity : entities) {
 			entity.render(g);
 		}
-
+		
 		g.translate(-camera.getRenderOffsetX(), -camera.getRenderOffsetY());
 		
 		game.drawSidebarRow("Player Coords (X, Y): " + player.getX() + ", " + player.getY(), g);
+	}
+	
+	public void onMouseClick(int button, int x, int y) {
+		double xt = x - camera.getRenderOffsetX();
+		double yt = y - camera.getRenderOffsetY();
+		Block block = getBlock(xt, yt);
+		if (block == null) return;
+		
+		block.setType(null);
 	}
 
 	public void placeBlock(Block block, double x, double y) {
@@ -96,10 +129,11 @@ public class World {
 	}
 
 	public Block getBlock(double x, double y) {
+		System.out.println(x + ", " + y);
 		for (Chunk chunk : chunks) {
 			if (chunk.containsCoord(x, y)) {
 				return chunk.getBlock((int) (x / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE),
-						(int) (y / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE));
+						(int) (y / Block.SIZE) - (chunk.getYPos() * Chunk.SIZE));
 			}
 		}
 		return null;

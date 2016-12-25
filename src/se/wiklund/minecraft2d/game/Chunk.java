@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.game.entity.Entity;
-import se.wiklund.minecraft2d.type.BlockType;
+import se.wiklund.minecraft2d.types.BlockType;
 
 public class Chunk {
 	
@@ -70,15 +70,19 @@ public class Chunk {
 	}
 	
 	public boolean containsCoord(double x, double y) {
-		int minX = xPos * SIZE;
-		int minY = yPos * SIZE;
-		int maxX = minX + SIZE;
-		int maxY = minY + SIZE;
+		int minX = xPos * SIZE * Block.SIZE;
+		int minY = yPos * SIZE * Block.SIZE;
+		int maxX = minX + SIZE * Block.SIZE;
+		int maxY = minY + SIZE * Block.SIZE;
 		
 		return x >= minX && x <= maxX && y >= minY && y <= maxY;
 	}
 	
 	public boolean isEntityInside(Entity entity) {
 		return entity.getBounds().intersects(getBounds());
+	}
+	
+	public Block[] getBlocks() {
+		return blocks;
 	}
 }

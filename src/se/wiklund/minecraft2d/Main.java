@@ -1,5 +1,6 @@
 package se.wiklund.minecraft2d;
 
+import se.wiklund.minecraft2d.game.Game;
 import se.wiklund.minecraft2d.graphics.Screen;
 import se.wiklund.minecraft2d.graphics.Window;
 
@@ -10,20 +11,22 @@ public class Main {
 	public static final int TICKRATE = 64;
 	public static final String NAME = "Minecraft2D";
 	
-	
 	private static Window window;
 	private static Screen screen;
 	private static int tps, fps;
+	
+	private static State state;
 	
 	public static void start() {
 		window = new Window();
 		screen = window.getScreen();
 		
+		state = new Game();
+		
 		new Thread(()-> startLoop()).start();
 	}
 	
 	private static void startLoop() {
-		
 		final double UPDATE_INTERVAL = 1000000000 / TICKRATE;
 		
 		long lastTime = System.nanoTime();
@@ -62,6 +65,14 @@ public class Main {
 	
 	public static int getFPS() {
 		return fps;
+	}
+	
+	public static State getState() {
+		return state;
+	}
+	
+	public static void setState(State state) {
+		Main.state = state;
 	}
 	
 	public static void main(String[] args) {

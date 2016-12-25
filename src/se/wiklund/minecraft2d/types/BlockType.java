@@ -1,4 +1,4 @@
-package se.wiklund.minecraft2d.type;
+package se.wiklund.minecraft2d.types;
 
 import java.awt.image.BufferedImage;
 

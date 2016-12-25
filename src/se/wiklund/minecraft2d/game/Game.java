@@ -5,8 +5,9 @@ import java.awt.Graphics2D;
 
 import se.wiklund.minecraft2d.Assets;
 import se.wiklund.minecraft2d.Main;
+import se.wiklund.minecraft2d.State;
 
-public class Game {
+public class Game extends State {
 	
 	private World world;
 	private int sidebarY;
@@ -32,5 +33,10 @@ public class Game {
 		g.setFont(Assets.FONT_SIDEBAR);
 		g.drawString(text, 7, sidebarY);
 		sidebarY += 15;
+	}
+
+	@Override
+	public void onMouseClick(int button, int x, int y) {
+		world.onMouseClick(button, x, y);
 	}
 }

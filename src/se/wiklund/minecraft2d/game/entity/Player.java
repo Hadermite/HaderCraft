@@ -3,16 +3,14 @@ package se.wiklund.minecraft2d.game.entity;
 import java.awt.event.KeyEvent;
 
 import se.wiklund.minecraft2d.Assets;
-import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.input.Keyboard;
+import se.wiklund.minecraft2d.types.Direction;
 
 public class Player extends Entity {
 	
-	private static final double SPEED = 10.0 / Main.TICKRATE;
-	
 	public Player() {
-		super(Assets.PLAYER, 0, 126, Block.SIZE, Block.SIZE * 2);
+		super(Assets.PLAYER, 0, 126 * Block.SIZE, Block.SIZE, Block.SIZE * 2);
 	}
 	
 	@Override
@@ -20,16 +18,13 @@ public class Player extends Entity {
 		super.tick();
 		
 		if (Keyboard.isKeyDown(KeyEvent.VK_A)) {
-			move(-SPEED, 0);
-		}
-		if (Keyboard.isKeyDown(KeyEvent.VK_W)) {
-			move(0, -SPEED);
+			move(Direction.LEFT);
 		}
 		if (Keyboard.isKeyDown(KeyEvent.VK_D)) {
-			move(SPEED, 0);
+			move(Direction.RIGHT);
 		}
-		if (Keyboard.isKeyDown(KeyEvent.VK_S)) {
-			move(0, SPEED);
+		if (Keyboard.isKeyDown(KeyEvent.VK_SPACE)) {
+			jump();
 		}
 	}
 }
