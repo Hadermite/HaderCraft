@@ -138,7 +138,10 @@ public class World {
 	public Block getBlock(double x, double y) {
 		for (Chunk chunk : chunks) {
 			if (chunk.containsCoord(x, y)) {
-				return chunk.getBlock((int) (x / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE),
+				int xPos = 0;
+				if (x >= 0) xPos = (int) (x / Block.SIZE);
+				else xPos = (int) (x / Block.SIZE - 1);
+				return chunk.getBlock(xPos - (chunk.getXPos() * Chunk.SIZE),
 						(int) (y / Block.SIZE) - (chunk.getYPos() * Chunk.SIZE));
 			}
 		}
