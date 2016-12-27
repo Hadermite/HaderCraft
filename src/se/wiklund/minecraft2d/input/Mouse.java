@@ -20,14 +20,14 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		x = e.getX() / Main.SCALE;
-		y = e.getY() / Main.SCALE;
+		x = e.getX() / Main.scale;
+		y = e.getY() / Main.scale;
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		x = e.getX() / Main.SCALE;
-		y = e.getY() / Main.SCALE;
+		x = e.getX() / Main.scale;
+		y = e.getY() / Main.scale;
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		down = false;
-		Main.getState().onMouseClick(e.getButton(), (int) (e.getX() / Main.SCALE), (int) (e.getY() / Main.SCALE));
+		Main.getState().onMouseClick(e.getButton(), (int) (e.getX() / Main.scale), (int) (e.getY() / Main.scale));
 	}
 
 	public static double getX() {
