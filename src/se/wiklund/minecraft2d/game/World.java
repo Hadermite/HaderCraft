@@ -35,7 +35,7 @@ public class World {
 		camera = new Camera();
 		screenBounds = new Rectangle();
 		lblPlayerCoords = game.getHUD().addSidebarRow("");
-		
+
 		for (int xPos = -PRELOAD_CHUNKS; xPos < PRELOAD_CHUNKS; xPos++) {
 			for (int yPos = 0; yPos < chunksY; yPos++) {
 				chunks.add(new Chunk(xPos, yPos));
@@ -54,47 +54,12 @@ public class World {
 
 		for (Entity entity : entities) {
 			entity.tick();
-			Rectangle bottom = entity.getBoundsBottom();
-			Rectangle top = entity.getBoundsTop();
-			Rectangle left = entity.getBoundsLeft();
-			Rectangle right = entity.getBoundsRight();
-			boolean inAir = true;
 
-			for (Chunk chunk : chunks) {
-				if (chunk.isEntityInside(entity)) {
-					for (Block block : chunk.getBlocks()) {
-						if (block.getType() == null)
-							continue;
-						if (bottom.intersects(block.getBounds())) {
-							if (entity.getVelY() > 0)
-								entity.setVelY(0);
-							inAir = false;
-							entity.setY(block.getY() - entity.getHeight() + 1);
-						}
-						if (top.intersects(block.getBounds())) {
-							if (entity.getVelY() < 0)
-								entity.setVelY(0);
-							entity.setY(block.getY() + Block.SIZE);
-						}
-						if (left.intersects(block.getBounds())) {
-							if (entity.getVelX() < 0)
-								entity.setVelX(0);
-							entity.setX(block.getX() + Block.SIZE);
-						}
-						if (right.intersects(block.getBounds())) {
-							if (entity.getVelX() > 0)
-								entity.setVelX(0);
-							entity.setX(block.getX() - entity.getWidth());
-						}
-					}
-				}
-			}
-
-			entity.setInAir(inAir);
+			checkCollision(entity);
 		}
 
 		camera.tick(player);
-		
+
 		if (lastXCoord != player.getX() || lastYCoord != player.getY()) {
 			lastXCoord = player.getX();
 			lastYCoord = player.getY();
@@ -145,12 +110,54 @@ public class World {
 		for (Chunk chunk : chunks) {
 			if (chunk.containsCoord(x, y)) {
 				int xPos = 0;
-				if (x >= 0) xPos = (int) (x / Block.SIZE);
-				else xPos = (int) (x / Block.SIZE - 1);
+				if (x >= 0)
+					xPos = (int) (x / Block.SIZE);
+				else
+					xPos = (int) (x / Block.SIZE - 1);
 				return chunk.getBlock(xPos - (chunk.getXPos() * Chunk.SIZE),
 						(int) (y / Block.SIZE) - (chunk.getYPos() * Chunk.SIZE));
 			}
 		}
 		return null;
+	}
+
+	private void checkCollision(Entity entity) {
+		Rectangle bottom = entity.getBoundsBottom();
+		Rectangle top = entity.getBoundsTop();
+		Rectangle left = entity.getBoundsLeft();
+		Rectangle right = entity.getBoundsRight();
+		boolean inAir = true;
+
+		for (Chunk chunk : chunks) {
+			if (chunk.isEntityInside(entity)) {
+				for (Block block : chunk.getBlocks()) {
+					if (block.getType() == null)
+						continue;
+					if (bottom.intersects(block.getBounds())) {
+						if (entity.getVelY() > 0)
+							entity.setVelY(0);
+						inAir = false;
+						entity.setY(block.getY() - entity.getHeight() + 1);
+					}
+					if (top.intersects(block.getBounds())) {
+						if (entity.getVelY() < 0)
+							entity.setVelY(0);
+						entity.setY(block.getY() + Block.SIZE);
+					}
+					if (left.intersects(block.getBounds())) {
+						if (entity.getVelX() < 0)
+							entity.setVelX(0);
+						entity.setX(block.getX() + Block.SIZE);
+					}
+					if (right.intersects(block.getBounds())) {
+						if (entity.getVelX() > 0)
+							entity.setVelX(0);
+						entity.setX(block.getX() - entity.getWidth());
+					}
+				}
+			}
+		}
+
+		entity.setInAir(inAir);
 	}
 }

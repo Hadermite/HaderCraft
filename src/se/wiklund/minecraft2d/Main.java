@@ -25,7 +25,7 @@ public class Main {
 		screen = window.getScreen();
 		
 		UIUtils.setGraphics((Graphics2D) screen.getGraphics());
-		state = new Game();
+		state = new Menu();
 		
 		new Thread(()-> startLoop()).start();
 	}

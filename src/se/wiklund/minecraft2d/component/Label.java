@@ -17,16 +17,17 @@ public class Label extends Component {
 	}
 	
 	public Label(String text, Font font, Color color, double x, double y) {
-		super(x, y, UIUtils.getStringWidth(text, font), font.getSize());
+		super(x, y, UIUtils.getStringWidth(text, font), (int) ((double) font.getSize() / 10 * 8));
 		this.text = text;
 		this.font = font;
+		this.color = color;
 	}
 
 	@Override
 	public void render(Graphics2D g) {
 		g.setColor(color);
 		g.setFont(font);
-		g.drawString(text, (int) x, (int) y);
+		g.drawString(text, (int) x, (int) y + height);
 	}
 	
 	public void setText(String text) {
