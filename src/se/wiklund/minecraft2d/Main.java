@@ -2,13 +2,14 @@ package se.wiklund.minecraft2d;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 
 import com.sun.glass.events.KeyEvent;
 
 import se.wiklund.minecraft2d.graphics.Screen;
 import se.wiklund.minecraft2d.graphics.Window;
 import se.wiklund.minecraft2d.input.Keyboard;
+import se.wiklund.minecraft2d.input.Mouse;
+import se.wiklund.minecraft2d.menu.Menu;
 import se.wiklund.minecraft2d.util.UIUtils;
 
 public class Main {
@@ -34,7 +35,7 @@ public class Main {
 		updateCanvasSize();
 		
 		UIUtils.setGraphics((Graphics2D) screen.getGraphics());
-		state = new Menu();
+		setState(new Menu());
 		
 		new Thread(()-> startLoop()).start();
 	}
@@ -80,9 +81,9 @@ public class Main {
 				screen.tick();
 				if (Keyboard.isKeyDown(KeyEvent.VK_ALT) && Keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
 					if (window.isFullscreen()) {
-						Main.createNewWindow(false);
+						createNewWindow(false);
 					} else {
-						Main.createNewWindow(true);
+						createNewWindow(true);
 					}
 				}
 				ticks++;
@@ -120,7 +121,13 @@ public class Main {
 	}
 	
 	public static void setState(State state) {
+		if (Main.state != null) Mouse.removeMouseReader(Main.state);
 		Main.state = state;
+		Mouse.addMouseReader(state);
+	}
+	
+	public static Window getWindow() {
+		return window;
 	}
 	
 	public static void main(String[] args) {

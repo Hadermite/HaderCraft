@@ -8,6 +8,8 @@ import se.wiklund.minecraft2d.Assets;
 
 public class Button extends Component {
 	
+	public static final int BTN_BACK_Y = 210;
+	
 	protected Label label;
 	protected BufferedImage background;
 	

@@ -17,4 +17,5 @@ public class Assets {
 	public static final Font FONT_SIDEBAR = Loader.loadFont("/fonts/comfortaa.ttf", 12);
 	public static final Font FONT_BUTTON = Loader.loadFont("/fonts/comfortaa.ttf", 20);
 	public static final Font FONT_TITLE = Loader.loadFont("/fonts/comfortaa.ttf", 40);
+	public static final Font FONT_CHECKBOX = Loader.loadFont("/fonts/comfortaa.ttf", 16);
 }

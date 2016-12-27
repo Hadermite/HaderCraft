@@ -5,6 +5,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import se.wiklund.minecraft2d.Main;
 
@@ -12,7 +14,8 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
 	private static double x, y;
 	private static boolean down;
-
+	private static List<MouseReader> readers = new CopyOnWriteArrayList<>();
+	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 
@@ -53,7 +56,10 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		down = false;
-		Main.getState().onMouseClick(e.getButton(), (int) (e.getX() / Main.scale), (int) (e.getY() / Main.scale));
+		
+		for (MouseReader reader : readers) {
+			reader.onMouseClick(e.getButton(), (int) x, (int) y);
+		}
 	}
 
 	public static double getX() {
@@ -66,5 +72,13 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
 	public static boolean isDown() {
 		return down;
+	}
+	
+	public static void addMouseReader(MouseReader reader) {
+		readers.add(reader);
+	}
+	
+	public static void removeMouseReader(MouseReader reader) {
+		readers.remove(reader);
 	}
 }

@@ -1,9 +1,12 @@
-package se.wiklund.minecraft2d;
+package se.wiklund.minecraft2d.menu;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.wiklund.minecraft2d.Assets;
+import se.wiklund.minecraft2d.Main;
+import se.wiklund.minecraft2d.State;
 import se.wiklund.minecraft2d.component.Button;
 import se.wiklund.minecraft2d.component.Component;
 import se.wiklund.minecraft2d.component.Label;
@@ -56,7 +59,7 @@ public class Menu extends State {
 				Main.setState(new Game());
 			}
 			if (btnSettings.containsCoord(x, y)) {
-				System.out.println("Settings");
+				Main.setState(new Settings());
 			}
 			if (btnQuit.containsCoord(x, y)) {
 				System.exit(0);

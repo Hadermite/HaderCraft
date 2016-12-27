@@ -2,7 +2,9 @@ package se.wiklund.minecraft2d;
 
 import java.awt.Graphics2D;
 
-public abstract class State {
+import se.wiklund.minecraft2d.input.MouseReader;
+
+public abstract class State implements MouseReader {
 	
 	public abstract void tick();
 	public abstract void render(Graphics2D g);
