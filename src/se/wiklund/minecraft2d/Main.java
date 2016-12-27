@@ -10,6 +10,7 @@ import se.wiklund.minecraft2d.graphics.Window;
 import se.wiklund.minecraft2d.input.Keyboard;
 import se.wiklund.minecraft2d.input.Mouse;
 import se.wiklund.minecraft2d.menu.Menu;
+import se.wiklund.minecraft2d.menu.Settings;
 import se.wiklund.minecraft2d.util.UIUtils;
 
 public class Main {
@@ -29,7 +30,7 @@ public class Main {
 	private static State state;
 	
 	public static void start() {
-		window = new Window(false);
+		window = new Window(true);
 		screen = window.getScreen();
 		
 		updateCanvasSize();
@@ -79,7 +80,8 @@ public class Main {
 			while (delta >= UPDATE_INTERVAL) {
 				delta -= UPDATE_INTERVAL;
 				screen.tick();
-				if (Keyboard.isKeyDown(KeyEvent.VK_ALT) && Keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+				if ((Keyboard.isKeyDown(KeyEvent.VK_ALT) && Keyboard.isKeyPressed(KeyEvent.VK_ENTER)) || Settings.fullscreenChangeQueued) {
+					Settings.fullscreenChangeQueued = false;
 					if (window.isFullscreen()) {
 						createNewWindow(false);
 					} else {

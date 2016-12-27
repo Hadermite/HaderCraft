@@ -15,7 +15,7 @@ import se.wiklund.minecraft2d.listener.CheckBoxListener;
 
 public class Settings extends State {
 	
-	public static boolean antialiasing;
+	public static boolean antialiasing, fullscreenChangeQueued;
 	
 	private List<Component> components;
 	
@@ -74,7 +74,7 @@ public class Settings extends State {
 		@Override
 		public void onChangeValue(CheckBox box, boolean checked) {
 			if (box == chkFullscreen) {
-				Main.createNewWindow(checked);
+				fullscreenChangeQueued = true;
 			}
 			if (box == chkAA) {
 				antialiasing = checked;
