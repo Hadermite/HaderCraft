@@ -3,7 +3,6 @@ package se.wiklund.minecraft2d.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,6 @@ public class World {
 	private Player player;
 	private Camera camera;
 	private Rectangle screenBounds;
-	DecimalFormat coordFormat = new DecimalFormat("#.0");
 	private Label lblPlayerCoords;
 	private double lastXCoord, lastYCoord;
 
