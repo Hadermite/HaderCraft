@@ -3,10 +3,12 @@ package se.wiklund.minecraft2d.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import se.wiklund.minecraft2d.Main;
+import se.wiklund.minecraft2d.component.Label;
 import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.game.entity.Entity;
 import se.wiklund.minecraft2d.game.entity.Player;
@@ -16,16 +18,17 @@ public class World {
 	public static final int HEIGHT = Chunk.SIZE * 16;
 	private static final int PRELOAD_CHUNKS = 16;
 
-	private Game game;
 	private int chunksY;
 	private List<Chunk> chunks;
 	private List<Entity> entities;
 	private Player player;
 	private Camera camera;
 	private Rectangle screenBounds;
+	DecimalFormat coordFormat = new DecimalFormat("#.0");
+	private Label lblPlayerCoords;
+	private double lastXCoord, lastYCoord;
 
 	public World(Game game) {
-		this.game = game;
 
 		chunksY = HEIGHT / Chunk.SIZE;
 		chunks = new ArrayList<>();
@@ -33,7 +36,8 @@ public class World {
 		player = new Player();
 		camera = new Camera();
 		screenBounds = new Rectangle();
-
+		lblPlayerCoords = game.getHUD().addSidebarRow("");
+		
 		for (int xPos = -PRELOAD_CHUNKS; xPos < PRELOAD_CHUNKS; xPos++) {
 			for (int yPos = 0; yPos < chunksY; yPos++) {
 				chunks.add(new Chunk(xPos, yPos));
@@ -92,6 +96,12 @@ public class World {
 		}
 
 		camera.tick(player);
+		
+		if (lastXCoord != player.getX() || lastYCoord != player.getY()) {
+			lastXCoord = player.getX();
+			lastYCoord = player.getY();
+			lblPlayerCoords.setText("Player X, Y: " + (int) lastXCoord + ", " + (int) lastYCoord);
+		}
 
 		screenBounds.setBounds((int) -camera.getRenderOffsetX(), (int) -camera.getRenderOffsetY(), Main.WIDTH,
 				Main.HEIGHT);
@@ -112,8 +122,6 @@ public class World {
 		}
 
 		g.translate(-camera.getRenderOffsetX(), -camera.getRenderOffsetY());
-
-		game.drawSidebarRow("Player Coords (X, Y): " + player.getX() + ", " + player.getY(), g);
 	}
 
 	public void onMouseClick(int button, int x, int y) {

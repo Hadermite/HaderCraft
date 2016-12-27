@@ -1,8 +1,11 @@
 package se.wiklund.minecraft2d;
 
+import java.awt.Graphics2D;
+
 import se.wiklund.minecraft2d.game.Game;
 import se.wiklund.minecraft2d.graphics.Screen;
 import se.wiklund.minecraft2d.graphics.Window;
+import se.wiklund.minecraft2d.util.UIUtils;
 
 public class Main {
 	
@@ -21,6 +24,7 @@ public class Main {
 		window = new Window();
 		screen = window.getScreen();
 		
+		UIUtils.setGraphics((Graphics2D) screen.getGraphics());
 		state = new Game();
 		
 		new Thread(()-> startLoop()).start();

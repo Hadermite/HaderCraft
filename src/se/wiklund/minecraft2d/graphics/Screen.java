@@ -11,7 +11,7 @@ import se.wiklund.minecraft2d.input.Keyboard;
 import se.wiklund.minecraft2d.input.Mouse;
 
 public class Screen extends Canvas {
-
+	
 	public Screen() {
 		setPreferredSize(new Dimension((int) (Main.WIDTH * Main.SCALE), (int) (Main.HEIGHT * Main.SCALE)));
 		

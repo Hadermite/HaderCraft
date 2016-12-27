@@ -1,42 +1,39 @@
 package se.wiklund.minecraft2d.game;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
-import se.wiklund.minecraft2d.Assets;
-import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.State;
 
 public class Game extends State {
 	
+	private HUD hud;
 	private World world;
-	private int sidebarY;
 	
 	public Game() {
+		hud = new HUD();
 		world = new World(this);
 	}
 	
 	public void tick() {
 		world.tick();
+		hud.tick();
 	}
 	
 	public void render(Graphics2D g) {
-		sidebarY = 15;
 		world.render(g);
-		
-		drawSidebarRow("TPS: " + Main.getTPS(), g);
-		drawSidebarRow("FPS: " + Main.getFPS(), g);
-	}
-	
-	public void drawSidebarRow(String text, Graphics2D g) {
-		g.setColor(Color.BLACK);
-		g.setFont(Assets.FONT_SIDEBAR);
-		g.drawString(text, 7, sidebarY);
-		sidebarY += 15;
+		hud.render(g);
 	}
 
 	@Override
 	public void onMouseClick(int button, int x, int y) {
 		world.onMouseClick(button, x, y);
+	}
+	
+	public World getWorld() {
+		return world;
+	}
+	
+	public HUD getHUD() {
+		return hud;
 	}
 }
