@@ -59,14 +59,14 @@ public class Entity {
 
 	public void render(Graphics2D g) {
 		g.drawImage(texture, (int) x, (int) y, width, height, null);
-		g.setColor(Color.BLUE);
-		g.draw(getBoundsTop());
-		g.setColor(Color.YELLOW);
-		g.draw(getBoundsBottom());
-		g.setColor(Color.RED);
-		g.draw(getBoundsLeft());
-		g.setColor(Color.GREEN);
-		g.draw(getBoundsRight());
+//		g.setColor(Color.BLUE);
+//		g.draw(getBoundsTop());
+//		g.setColor(Color.YELLOW);
+//		g.draw(getBoundsBottom());
+//		g.setColor(Color.RED);
+//		g.draw(getBoundsLeft());
+//		g.setColor(Color.GREEN);
+//		g.draw(getBoundsRight());
 	}
 
 	public void move(Direction dir) {
