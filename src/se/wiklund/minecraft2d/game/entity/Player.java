@@ -10,7 +10,7 @@ import se.wiklund.minecraft2d.types.Direction;
 public class Player extends Entity {
 	
 	public Player() {
-		super(Assets.PLAYER, 0, 127 * Block.SIZE, Block.SIZE, Block.SIZE * 2);
+		super(Assets.PLAYER, 0, 127 * Block.SIZE, (int) (Block.SIZE * 0.8), (int) (Block.SIZE * 1.8));
 	}
 	
 	@Override
