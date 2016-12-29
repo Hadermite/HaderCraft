@@ -15,7 +15,7 @@ import se.wiklund.minecraft2d.listener.CheckBoxListener;
 
 public class Settings extends State {
 	
-	public static boolean antialiasing, fullscreenChangeQueued;
+	public static boolean antiAliasing = true, fullscreenChangeQueued, noSplash;
 	
 	private List<Component> components;
 	
@@ -24,18 +24,18 @@ public class Settings extends State {
 	private Button btnBack;
 	
 	public Settings() {
-		components = new ArrayList<>();
+		components = new ArrayList<Component>();
 		
-		lblTitle = new Label("Settings", Assets.FONT_TITLE, 0, 10);
-		chkFullscreen = new CheckBox("Fullscreen", 50, 60);
-		chkAA = new CheckBox("Anti-Aliasing", 50, 80);
+		lblTitle = new Label("Settings", Assets.FONT_TITLE, 0, Label.TITLE_Y);
+		chkFullscreen = new CheckBox("Fullscreen", 500, 250);
+		chkAA = new CheckBox("Anti-Aliasing", 500, 250 + 30 + Assets.FONT_CHECKBOX.getSize());
 		btnBack = new Button("Back", 0, Button.BTN_BACK_Y);
 		
 		lblTitle.centerX();
 		btnBack.centerX();
 		
 		chkFullscreen.setChecked(Main.getWindow().isFullscreen());
-		chkAA.setChecked(antialiasing);
+		chkAA.setChecked(antiAliasing);
 
 		chkFullscreen.addListener(new SettingsListener());
 		chkAA.addListener(new SettingsListener());
@@ -77,7 +77,7 @@ public class Settings extends State {
 				fullscreenChangeQueued = true;
 			}
 			if (box == chkAA) {
-				antialiasing = checked;
+				antiAliasing = checked;
 			}
 		}
 	}

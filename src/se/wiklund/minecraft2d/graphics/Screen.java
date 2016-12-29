@@ -35,7 +35,7 @@ public class Screen extends Canvas {
 
 		Graphics2D g = (Graphics2D) bs.getDrawGraphics();
 		g.scale(Main.scale, Main.scale);
-		if (Settings.antialiasing)
+		if (Settings.antiAliasing)
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		g.setColor(Color.WHITE);

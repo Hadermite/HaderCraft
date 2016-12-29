@@ -20,7 +20,7 @@ public class CheckBox extends Component implements MouseReader {
 		super(x, y - 2, Assets.FONT_CHECKBOX.getSize(), Assets.FONT_CHECKBOX.getSize());
 		
 		label = new Label(text, Assets.FONT_CHECKBOX, x + width + 10, y);
-		listeners = new ArrayList<>();
+		listeners = new ArrayList<CheckBoxListener>();
 		
 		Mouse.addMouseReader(this);
 	}
@@ -37,7 +37,7 @@ public class CheckBox extends Component implements MouseReader {
 		Color color = Color.RED;
 		if (checked) color = Color.GREEN;
 		g.setColor(color);
-		g.fillRect((int) x + 2, (int) y + 2, width - 4, height - 4);
+		g.fillRect((int) x + 4, (int) y + 4, width - 8, height - 8);
 		label.render(g);
 	}
 	

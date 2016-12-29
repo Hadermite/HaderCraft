@@ -8,13 +8,13 @@ import se.wiklund.minecraft2d.Assets;
 
 public class Button extends Component {
 	
-	public static final int BTN_BACK_Y = 210;
+	public static final int BTN_BACK_Y = 850;
 	
 	protected Label label;
 	protected BufferedImage background;
 	
 	public Button(String text, double x, double y) {
-		this(text, x, y, 140, 30);
+		this(text, x, y, 600, 130);
 	}
 	
 	public Button(String text, double x, double y, int width, int height) {

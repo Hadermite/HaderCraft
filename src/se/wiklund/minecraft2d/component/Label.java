@@ -8,6 +8,8 @@ import se.wiklund.minecraft2d.util.UIUtils;
 
 public class Label extends Component {
 	
+	public static final int TITLE_Y = 70;
+	
 	protected String text;
 	protected Font font;
 	protected Color color;

@@ -14,7 +14,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
 	private static double x, y;
 	private static boolean down;
-	private static List<MouseReader> readers = new CopyOnWriteArrayList<>();
+	private static List<MouseReader> readers = new CopyOnWriteArrayList<MouseReader>();
 	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {

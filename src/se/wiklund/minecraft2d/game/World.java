@@ -3,6 +3,7 @@ package se.wiklund.minecraft2d.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,17 +24,18 @@ public class World {
 	private Player player;
 	private Camera camera;
 	private Rectangle screenBounds;
+	private DecimalFormat coordFormat;
 	private Label lblPlayerCoords;
 	private double lastXCoord, lastYCoord;
 
 	public World(Game game) {
-
 		chunksY = HEIGHT / Chunk.SIZE;
-		chunks = new ArrayList<>();
-		entities = new ArrayList<>();
+		chunks = new ArrayList<Chunk>();
+		entities = new ArrayList<Entity>();
 		player = new Player();
 		camera = new Camera();
 		screenBounds = new Rectangle();
+		coordFormat = new DecimalFormat("0.0");
 		lblPlayerCoords = game.getHUD().addSidebarRow("");
 
 		for (int xPos = -PRELOAD_CHUNKS; xPos < PRELOAD_CHUNKS; xPos++) {
@@ -61,9 +63,9 @@ public class World {
 		camera.tick(player);
 
 		if (lastXCoord != player.getX() || lastYCoord != player.getY()) {
-			lastXCoord = player.getX();
-			lastYCoord = player.getY();
-			lblPlayerCoords.setText("Player X, Y: " + (int) lastXCoord + ", " + (int) lastYCoord);
+			lastXCoord = player.getXPos();
+			lastYCoord = player.getYPos();
+			lblPlayerCoords.setText("Player Coords: " + coordFormat.format(lastXCoord) + "; " + coordFormat.format(lastYCoord));
 		}
 
 		screenBounds.setBounds((int) -camera.getRenderOffsetX(), (int) -camera.getRenderOffsetY(), Main.WIDTH,
@@ -81,14 +83,7 @@ public class World {
 		}
 
 		for (Entity entity : entities) {
-			if (entity != camera.getFocusEntity()) {
-				entity.render(g);
-			} else {
-				g.translate(-camera.getRenderOffsetX(), -camera.getRenderOffsetY());
-				g.drawImage(entity.getTexture(), (Main.WIDTH - entity.getWidth()) / 2,
-						(Main.HEIGHT - entity.getHeight()) / 2, entity.getWidth(), entity.getHeight(), null);
-				g.translate(camera.getRenderOffsetX(), camera.getRenderOffsetY());
-			}
+			entity.render(g);
 		}
 
 		g.translate(-camera.getRenderOffsetX(), -camera.getRenderOffsetY());
@@ -129,42 +124,29 @@ public class World {
 	}
 
 	private void checkCollision(Entity entity) {
-		Rectangle bottom = entity.getBoundsBottom();
-		Rectangle top = entity.getBoundsTop();
-		Rectangle left = entity.getBoundsLeft();
-		Rectangle right = entity.getBoundsRight();
-		boolean inAir = true;
-
 		for (Chunk chunk : chunks) {
 			if (chunk.isEntityInside(entity)) {
 				for (Block block : chunk.getBlocks()) {
-					if (block.getType() == null)
-						continue;
-					if (bottom.intersects(block.getBounds())) {
-						if (entity.getVelY() > 0)
-							entity.setVelY(0);
-						inAir = false;
-						entity.setY(block.getY() - entity.getHeight() + 1);
+					if (block.getType() == null) continue;
+					if (entity.getBoundsBottom().intersects(block.getBounds())) {
+						entity.setY(block.getY() - entity.getHeight());
+						if (entity.getVelY() > 0) entity.setVelY(0);
+						entity.setInAir(false);
 					}
-					if (top.intersects(block.getBounds())) {
-						if (entity.getVelY() < 0)
-							entity.setVelY(0);
+					if (entity.getBoundsTop().intersects(block.getBounds())) {
 						entity.setY(block.getY() + Block.SIZE);
+						if (entity.getVelY() < 0) entity.setVelY(0);
 					}
-					if (left.intersects(block.getBounds())) {
-						if (entity.getVelX() < 0)
-							entity.setVelX(0);
+					if (entity.getBoundsLeft().intersects(block.getBounds())) {
 						entity.setX(block.getX() + Block.SIZE);
+						if (entity.getVelX() < 0) entity.setVelX(0);
 					}
-					if (right.intersects(block.getBounds())) {
-						if (entity.getVelX() > 0)
-							entity.setVelX(0);
+					if (entity.getBoundsRight().intersects(block.getBounds())) {
 						entity.setX(block.getX() - entity.getWidth());
+						if (entity.getVelX() > 0) entity.setVelX(0);
 					}
 				}
 			}
 		}
-
-		entity.setInAir(inAir);
 	}
 }

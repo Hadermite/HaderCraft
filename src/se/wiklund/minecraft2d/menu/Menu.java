@@ -20,12 +20,13 @@ public class Menu extends State {
 	private Button btnPlay, btnSettings, btnQuit;
 
 	public Menu() {
-		components = new ArrayList<>();
-
-		lblTitle = new Label("Minecraft2D", Assets.FONT_TITLE, 0, 10);
-		btnPlay = new Button("Play", 0, 75);
-		btnSettings = new Button("Settings", 0, 115);
-		btnQuit = new Button("Quit", 0, 155);
+		components = new ArrayList<Component>();
+		
+		int startX = 250;
+		lblTitle = new Label("Minecraft2D", Assets.FONT_TITLE, 0, Label.TITLE_Y);
+		btnPlay = new Button("Play", 0, startX + 175 * 0);
+		btnSettings = new Button("Settings", 0, startX + 175 * 1);
+		btnQuit = new Button("Quit", 0, startX + 175 * 2);
 
 		btnPlay.centerX();
 		lblTitle.centerX();

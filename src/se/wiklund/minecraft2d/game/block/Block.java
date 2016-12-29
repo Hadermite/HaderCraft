@@ -7,7 +7,7 @@ import se.wiklund.minecraft2d.types.BlockType;
 
 public class Block {
 	
-	public static final int SIZE = 32;
+	public static final int SIZE = 64;
 	
 	private BlockType type;
 	private int x, y;

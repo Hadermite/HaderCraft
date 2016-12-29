@@ -21,14 +21,15 @@ public class Loader {
 	
 	public static Font loadFont(String path, float size) {
 		try {
-			Font font = Font.createFont(Font.TRUETYPE_FONT, Loader.class.getResourceAsStream(path)).deriveFont(size);;
+			Font font = Font.createFont(Font.TRUETYPE_FONT, Loader.class.getResourceAsStream(path)).deriveFont(size);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(font);
 			return font;
-		} catch (IOException | FontFormatException e) {
+		} catch (FontFormatException e) {
 			e.printStackTrace();
-		}
-		
+		} catch (IOException e) {
+			e.printStackTrace();
+		};
 		return null;
 	}
 }

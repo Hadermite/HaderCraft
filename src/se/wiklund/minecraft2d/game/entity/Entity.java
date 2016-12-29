@@ -4,13 +4,14 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.types.Direction;
 import se.wiklund.minecraft2d.util.MathUtils;
 
 public class Entity {
 
-	private static final int COL_MARGIN = 10;
-	private static final int COL_SIZE = 5;
+	private static final int COL_MARGIN = 5;
+	private static final int COL_SIZE = 10;
 
 	protected BufferedImage texture;
 	protected double x, y;
@@ -28,25 +29,24 @@ public class Entity {
 
 		// Setup variables for a default entity. Subclasses can change these
 		// later on in their own constructor.
-		acceleration = 1.0;
-		breakForce = 1.0;
-		maxSpeed = 5.0;
-		jumpForce = 4.0;
+		acceleration = 2.0;
+		breakForce = 2.0;
+		maxSpeed = 7.0;
+		jumpForce = 10.0;
 		gravity = 0.6;
 		inAir = true;
 	}
 
-	public Entity(BufferedImage texture, double xPos, double yPos) {
-		this(texture, xPos, yPos, texture.getWidth(), texture.getHeight());
+	public Entity(BufferedImage texture, double x, double y) {
+		this(texture, x, y, texture.getWidth(), texture.getHeight());
 	}
 
 	public void tick() {
 		if (!hasMoved) {
 			velX = MathUtils.encounterZero(velX, breakForce);
 		}
-		if (inAir) {
-			velY += gravity;
-		}
+		
+		velY += gravity;
 
 		velX = MathUtils.clamp(velX, -maxSpeed, maxSpeed);
 		
@@ -75,7 +75,7 @@ public class Entity {
 	public void jump() {
 		if (inAir) return;
 		inAir = true;
-		velY -= jumpForce;
+		velY = -jumpForce;
 	}
 
 	public Rectangle getBounds() {
@@ -154,5 +154,13 @@ public class Entity {
 	
 	public void setVelY(double velY) {
 		this.velY = velY;
+	}
+	
+	public double getXPos() {
+		return x / Block.SIZE;
+	}
+	
+	public double getYPos() {
+		return y / Block.SIZE;
 	}
 }

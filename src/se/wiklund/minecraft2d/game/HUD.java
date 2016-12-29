@@ -17,7 +17,7 @@ public class HUD {
 	private int lastTPS, lastFPS;
 	
 	public HUD() {
-		components = new ArrayList<>();
+		components = new ArrayList<Component>();
 		
 		lblTPS = addSidebarRow("TPS: N/A");
 		lblFPS = addSidebarRow("FPS: N/A");
@@ -47,7 +47,7 @@ public class HUD {
 	public Label addSidebarRow(String text) {
 		Label label = new Label(text, Assets.FONT_SIDEBAR, 7, sidebarY);
 		components.add(label);
-		sidebarY += 15;
+		sidebarY += Assets.FONT_SIDEBAR.getSize();
 		return label;
 	}
 }

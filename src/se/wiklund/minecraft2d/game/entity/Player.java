@@ -3,7 +3,6 @@ package se.wiklund.minecraft2d.game.entity;
 import java.awt.event.KeyEvent;
 
 import se.wiklund.minecraft2d.Assets;
-import se.wiklund.minecraft2d.game.Chunk;
 import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.input.Keyboard;
 import se.wiklund.minecraft2d.types.Direction;
@@ -11,7 +10,7 @@ import se.wiklund.minecraft2d.types.Direction;
 public class Player extends Entity {
 	
 	public Player() {
-		super(Assets.PLAYER, 0, 256 * Chunk.SIZE, Block.SIZE, Block.SIZE * 2);
+		super(Assets.PLAYER, 0, 127 * Block.SIZE, Block.SIZE, Block.SIZE * 2);
 	}
 	
 	@Override

@@ -5,21 +5,14 @@ import se.wiklund.minecraft2d.game.entity.Entity;
 
 public class Camera {
 	
-	private double x, y;
-	private double renderOffsetX, renderOffsetY;
+	private int x, y;
+	private int renderOffsetX, renderOffsetY;
 	private Entity focusEntity;
-	
-	public void tick(double x, double y) {
-		this.x = x;
-		this.y = y;
-		this.renderOffsetX = Main.WIDTH / 2 - x;
-		this.renderOffsetY = Main.HEIGHT / 2 - y;
-	}
 	
 	public void tick(Entity entity) {
 		this.focusEntity = entity;
-		this.x = entity.getX();
-		this.y = entity.getY();
+		this.x = (int) entity.getX();
+		this.y = (int) entity.getY();
 		this.renderOffsetX = (Main.WIDTH / 2) - x - (entity.getWidth() / 2);
 		this.renderOffsetY = (Main.HEIGHT / 2) - y - (entity.getHeight() / 2);
 	}

@@ -2,8 +2,7 @@ package se.wiklund.minecraft2d;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-
-import com.sun.glass.events.KeyEvent;
+import java.awt.event.KeyEvent;
 
 import se.wiklund.minecraft2d.graphics.Screen;
 import se.wiklund.minecraft2d.graphics.Window;
@@ -11,11 +10,12 @@ import se.wiklund.minecraft2d.input.Keyboard;
 import se.wiklund.minecraft2d.input.Mouse;
 import se.wiklund.minecraft2d.menu.Menu;
 import se.wiklund.minecraft2d.menu.Settings;
+import se.wiklund.minecraft2d.menu.SplashScreen;
 import se.wiklund.minecraft2d.util.UIUtils;
 
 public class Main {
 	
-	public static final int WIDTH = 480, HEIGHT = WIDTH / 16 * 9;
+	public static final int WIDTH = 1920, HEIGHT = WIDTH / 16 * 9;
 	public static final int TICKRATE = 64;
 	public static final String NAME = "Minecraft2D";
 	
@@ -36,9 +36,18 @@ public class Main {
 		updateCanvasSize();
 		
 		UIUtils.setGraphics((Graphics2D) screen.getGraphics());
-		setState(new Menu());
+		if (!Settings.noSplash) {
+			setState(new SplashScreen());
+		} else {
+			setState(new Menu());
+		}
 		
-		new Thread(()-> startLoop()).start();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				startLoop();
+			}
+		}).start();
 	}
 	
 	public static void updateCanvasSize() {
@@ -133,6 +142,10 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
+		for (int i = 0; i < args.length; i++) {
+			String arg = args[i];
+			if (arg.equalsIgnoreCase("-noSplash")) Settings.noSplash = true;
+		}
 		start();
 	}
 }
