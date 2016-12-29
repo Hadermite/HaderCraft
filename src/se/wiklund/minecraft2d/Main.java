@@ -30,7 +30,7 @@ public class Main {
 	private static State state;
 	
 	public static void start() {
-		window = new Window(false);
+		window = new Window(true);
 		screen = window.getScreen();
 		
 		updateCanvasSize();
