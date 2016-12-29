@@ -81,7 +81,14 @@ public class World {
 		}
 
 		for (Entity entity : entities) {
-			entity.render(g);
+			if (entity != camera.getFocusEntity()) {
+				entity.render(g);
+			} else {
+				g.translate(-camera.getRenderOffsetX(), -camera.getRenderOffsetY());
+				g.drawImage(entity.getTexture(), (Main.WIDTH - entity.getWidth()) / 2,
+						(Main.HEIGHT - entity.getHeight()) / 2, entity.getWidth(), entity.getHeight(), null);
+				g.translate(camera.getRenderOffsetX(), camera.getRenderOffsetY());
+			}
 		}
 
 		g.translate(-camera.getRenderOffsetX(), -camera.getRenderOffsetY());

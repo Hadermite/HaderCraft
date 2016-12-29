@@ -37,7 +37,7 @@ public class Screen extends Canvas {
 		g.scale(Main.scale, Main.scale);
 		if (Settings.antialiasing)
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+		
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 
