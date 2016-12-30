@@ -23,7 +23,7 @@ public class Menu extends State {
 		components = new ArrayList<Component>();
 		
 		int startX = 250;
-		lblTitle = new Label("Minecraft2D", Assets.FONT_TITLE, 0, Label.TITLE_Y);
+		lblTitle = new Label(Main.NAME, Assets.FONT_TITLE, 0, Label.TITLE_Y);
 		btnPlay = new Button("Play", 0, startX + 175 * 0);
 		btnSettings = new Button("Settings", 0, startX + 175 * 1);
 		btnQuit = new Button("Quit", 0, startX + 175 * 2);
