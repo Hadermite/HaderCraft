@@ -8,10 +8,7 @@ import se.wiklund.minecraft2d.Assets;
 import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.component.Component;
 import se.wiklund.minecraft2d.component.Label;
-import se.wiklund.minecraft2d.game.block.Block;
-import se.wiklund.minecraft2d.input.Mouse;
 import se.wiklund.minecraft2d.types.BlockType;
-import se.wiklund.minecraft2d.util.WorldUtils;
 
 public class HUD {
 	
