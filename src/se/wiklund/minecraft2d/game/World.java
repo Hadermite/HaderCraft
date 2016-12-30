@@ -1,6 +1,5 @@
 package se.wiklund.minecraft2d.game;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.text.DecimalFormat;
@@ -77,8 +76,6 @@ public class World {
 		for (Chunk chunk : chunks) {
 			if (chunk.getBounds().intersects(screenBounds)) {
 				chunk.render(g);
-				g.setColor(Color.YELLOW);
-				g.draw(chunk.getBounds());
 			}
 		}
 
