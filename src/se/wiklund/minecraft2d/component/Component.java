@@ -9,6 +9,7 @@ public class Component {
 	
 	protected double x, y;
 	protected int width, height;
+	protected int id;
 	
 	public Component(double x, double y, int width, int height) {
 		this.x = x;
@@ -25,17 +26,12 @@ public class Component {
 		
 	}
 	
-	public void center() {
-		x = (Main.WIDTH - width) / 2;
-		y = (Main.HEIGHT - height) / 2;
-	}
-	
 	public void centerX() {
 		x = (Main.WIDTH - width) / 2;
 	}
 	
-	public void centerY() {
-		y = (Main.HEIGHT - height) / 2;
+	public void centerX(int screenWidth) {
+		x = (screenWidth - width) / 2;
 	}
 
 	public double getX() {
@@ -72,6 +68,14 @@ public class Component {
 	
 	public Rectangle getBounds() {
 		return new Rectangle((int) x, (int) y, width, height);
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public boolean containsCoord(double x, double y) {

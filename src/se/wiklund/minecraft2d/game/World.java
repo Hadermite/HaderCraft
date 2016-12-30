@@ -1,5 +1,6 @@
 package se.wiklund.minecraft2d.game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.text.DecimalFormat;
@@ -11,6 +12,8 @@ import se.wiklund.minecraft2d.component.Label;
 import se.wiklund.minecraft2d.game.block.Block;
 import se.wiklund.minecraft2d.game.entity.Entity;
 import se.wiklund.minecraft2d.game.entity.Player;
+import se.wiklund.minecraft2d.types.BlockType;
+import se.wiklund.minecraft2d.util.WorldUtils;
 
 public class World {
 
@@ -36,6 +39,8 @@ public class World {
 		screenBounds = new Rectangle();
 		coordFormat = new DecimalFormat("0.0");
 		lblPlayerCoords = game.getHUD().addSidebarRow("");
+
+		WorldUtils.setCamera(camera);
 
 		for (int xPos = -PRELOAD_CHUNKS; xPos < PRELOAD_CHUNKS; xPos++) {
 			for (int yPos = 0; yPos <= chunksY; yPos++) {
@@ -64,7 +69,9 @@ public class World {
 		if (lastXCoord != player.getX() || lastYCoord != player.getY()) {
 			lastXCoord = player.getXPos();
 			lastYCoord = player.getYPos();
-			lblPlayerCoords.setText("Player Coords: " + coordFormat.format(lastXCoord) + "; " + coordFormat.format(lastYCoord));
+			String xCoord = coordFormat.format(lastXCoord);
+			String yCoord = coordFormat.format(lastYCoord);
+			lblPlayerCoords.setText("Player Coords: " + xCoord + "; " + yCoord);
 		}
 
 		screenBounds.setBounds((int) -camera.getRenderOffsetX(), (int) -camera.getRenderOffsetY(), Main.WIDTH,
@@ -72,6 +79,8 @@ public class World {
 	}
 
 	public void render(Graphics2D g) {
+		g.setColor(Color.CYAN);
+		g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 		g.translate(camera.getRenderOffsetX(), camera.getRenderOffsetY());
 		for (Chunk chunk : chunks) {
 			if (chunk.getBounds().intersects(screenBounds)) {
@@ -87,20 +96,44 @@ public class World {
 	}
 
 	public void onMouseClick(int button, int x, int y) {
-		double xt = x - camera.getRenderOffsetX();
-		double yt = y - camera.getRenderOffsetY();
-		Block block = getBlock(xt, yt);
+		double worldX = WorldUtils.getWorldX(x);
+		double worldY = WorldUtils.getWorldY(y);
+		Block block = getBlock(worldX, worldY);
 		if (block == null)
 			return;
 
-		block.setType(null);
+		if (button == 1) {
+			block.setType(null);
+		}
 	}
 
-	public void placeBlock(Block block, double x, double y) {
+	public void placeBlock(BlockType blockType, double x, double y) {
 		for (Chunk chunk : chunks) {
 			if (chunk.containsCoord(x, y)) {
-				chunk.placeBlock(block, (int) (x / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE),
-						(int) (y / Block.SIZE) - (chunk.getXPos() * Chunk.SIZE));
+				int xPos = (int) (x / Block.SIZE);
+				int yPos = (int) (y / Block.SIZE);
+				if (x < 0)
+					xPos--;
+				int xPosLocal = xPos - (chunk.getXPos() * Chunk.SIZE);
+				int yPosLocal = yPos - (chunk.getYPos() * Chunk.SIZE);
+
+				Rectangle block = new Rectangle(xPos * Block.SIZE, yPos * Block.SIZE, Block.SIZE, Block.SIZE);
+				for (Entity entity : entities) {
+					if (block.intersects(entity.getBounds()))
+						return;
+				}
+
+				chunk.placeBlock(new Block(blockType, xPos, yPos), xPosLocal, yPosLocal);
+			}
+		}
+	}
+
+	public void placeBlockScreen(BlockType blockType, int x, int y) {
+		double worldX = WorldUtils.getWorldX(x);
+		double worldY = WorldUtils.getWorldY(y);
+		for (Chunk chunk : chunks) {
+			if (chunk.containsCoord(worldX, worldY)) {
+				placeBlock(blockType, worldX, worldY);
 			}
 		}
 	}
@@ -124,23 +157,28 @@ public class World {
 		for (Chunk chunk : chunks) {
 			if (chunk.isEntityInside(entity)) {
 				for (Block block : chunk.getBlocks()) {
-					if (block.getType() == null) continue;
+					if (block.getType() == null)
+						continue;
 					if (entity.getBoundsBottom().intersects(block.getBounds())) {
 						entity.setY(block.getY() - entity.getHeight());
-						if (entity.getVelY() > 0) entity.setVelY(0);
+						if (entity.getVelY() > 0)
+							entity.setVelY(0);
 						entity.setInAir(false);
 					}
 					if (entity.getBoundsTop().intersects(block.getBounds())) {
 						entity.setY(block.getY() + Block.SIZE);
-						if (entity.getVelY() < 0) entity.setVelY(0);
+						if (entity.getVelY() < 0)
+							entity.setVelY(0);
 					}
 					if (entity.getBoundsLeft().intersects(block.getBounds())) {
 						entity.setX(block.getX() + Block.SIZE);
-						if (entity.getVelX() < 0) entity.setVelX(0);
+						if (entity.getVelX() < 0)
+							entity.setVelX(0);
 					}
 					if (entity.getBoundsRight().intersects(block.getBounds())) {
 						entity.setX(block.getX() - entity.getWidth());
-						if (entity.getVelX() > 0) entity.setVelX(0);
+						if (entity.getVelX() > 0)
+							entity.setVelX(0);
 					}
 				}
 			}

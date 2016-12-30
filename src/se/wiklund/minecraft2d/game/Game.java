@@ -7,28 +7,38 @@ import java.awt.image.BufferedImage;
 import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.State;
 import se.wiklund.minecraft2d.input.Keyboard;
+import se.wiklund.minecraft2d.types.BlockType;
 import se.wiklund.minecraft2d.util.blur.GaussianFilter;
 
 public class Game extends State {
 	
 	private HUD hud;
+	private BlocksMenu blocksMenu;
 	private World world;
 	private PauseMenu pauseMenu;
-	private boolean paused;
+	private boolean paused, blocksMenuOpen;
 	private BufferedImage pausedBackground;
+	private BlockType selectedBlock;
 	
 	public Game() {
-		hud = new HUD();
+		hud = new HUD(this);
+		blocksMenu = new BlocksMenu(this);
 		world = new World(this);
 		pauseMenu = new PauseMenu(this);
 	}
 	
 	public void tick() {
-		if (!paused) {
+		if (paused) {
+			pauseMenu.tick();
+		} else if (blocksMenuOpen) {
+			blocksMenu.tick();
+		} else {
 			world.tick();
 			hud.tick();
-		} else {
-			pauseMenu.tick();
+		}
+		
+		if (Keyboard.isKeyPressed(KeyEvent.VK_B) && !paused) {
+			blocksMenuOpen = !blocksMenuOpen;
 		}
 		
 		if (Keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) {
@@ -49,6 +59,9 @@ public class Game extends State {
 	public void render(Graphics2D g) {
 		world.render(g);
 		hud.render(g);
+		if (blocksMenuOpen) {
+			blocksMenu.render(g);
+		}
 		if (paused) {
 			g.drawImage(pausedBackground, 0, 0, Main.WIDTH, Main.HEIGHT, null);
 			pauseMenu.render(g);
@@ -57,11 +70,21 @@ public class Game extends State {
 
 	@Override
 	public void onMouseClick(int button, int x, int y) {
-		if (!paused) {
-			world.onMouseClick(button, x, y);
-		} else {
+		if (paused) {
 			pauseMenu.onMouseClick(button, x, y);
+		} else if (blocksMenuOpen) {
+			blocksMenu.onMouseClick(button, x, y);
+		} else {
+			world.onMouseClick(button, x, y);
+			
+			if (selectedBlock != null && button == 3) {
+				world.placeBlockScreen(selectedBlock, x, y);
+			}
 		}
+	}
+	
+	public void updateHUD() {
+		hud.tick();
 	}
 	
 	public World getWorld() {
@@ -78,5 +101,13 @@ public class Game extends State {
 	
 	public void setPaused(boolean paused) {
 		this.paused = paused;
+	}
+	
+	public BlockType getSelectedBlock() {
+		return selectedBlock;
+	}
+	
+	public void setSelectedBlock(BlockType selectedBlock) {
+		this.selectedBlock = selectedBlock;
 	}
 }

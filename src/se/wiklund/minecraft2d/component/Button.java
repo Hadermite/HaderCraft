@@ -17,6 +17,11 @@ public class Button extends Component {
 		this(text, x, y, 600, 130);
 	}
 	
+	public Button(BufferedImage background, double x, double y, int width, int height) {
+		this("", x, y, width, height);
+		this.background = background;
+	}
+	
 	public Button(String text, double x, double y, int width, int height) {
 		super(x, y, width, height);
 		label = new Label(text, Assets.FONT_BUTTON, x, y);
@@ -45,20 +50,14 @@ public class Button extends Component {
 	}
 	
 	@Override
-	public void center() {
-		super.center();
-		calculateLabel();
-	}
-	
-	@Override
 	public void centerX() {
 		super.centerX();
 		calculateLabel();
 	}
 	
 	@Override
-	public void centerY() {
-		super.centerY();
+	public void centerX(int screenWidth) {
+		super.centerX(screenWidth);
 		calculateLabel();
 	}
 }
