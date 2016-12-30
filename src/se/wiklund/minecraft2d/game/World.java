@@ -38,7 +38,7 @@ public class World {
 		lblPlayerCoords = game.getHUD().addSidebarRow("");
 
 		for (int xPos = -PRELOAD_CHUNKS; xPos < PRELOAD_CHUNKS; xPos++) {
-			for (int yPos = 0; yPos < chunksY; yPos++) {
+			for (int yPos = 0; yPos <= chunksY; yPos++) {
 				chunks.add(new Chunk(xPos, yPos));
 			}
 		}

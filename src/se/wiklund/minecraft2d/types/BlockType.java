@@ -6,7 +6,8 @@ import se.wiklund.minecraft2d.Assets;
 
 public enum BlockType {
 	
-	DIRT("Dirt", Assets.BLOCK_DIRT);
+	DIRT("Dirt", Assets.BLOCK_DIRT),
+	GRASS("Grass", Assets.BLOCK_GRASS);
 	
 	private String name;
 	private BufferedImage texture;

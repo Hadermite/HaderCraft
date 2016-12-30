@@ -26,7 +26,8 @@ public class Chunk {
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
 				BlockType blockType = BlockType.DIRT;
-				if ((yPos * SIZE) + y <= World.HEIGHT / 2) blockType = null;
+				if ((yPos * SIZE) + y == World.HEIGHT / 2) blockType = BlockType.GRASS;
+				if ((yPos * SIZE) + y < World.HEIGHT / 2) blockType = null;
 				blocks[x + y * SIZE] = new Block(blockType, xPos * SIZE + x, yPos * SIZE + y);
 			}
 		}

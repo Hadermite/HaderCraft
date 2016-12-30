@@ -9,6 +9,7 @@ public class Assets {
 	
 	//Blocks
 	public static final BufferedImage BLOCK_DIRT = Loader.loadImage("/textures/blocks/dirt.png");
+	public static final BufferedImage BLOCK_GRASS = Loader.loadImage("/textures/blocks/grass.png");
 	
 	//Sprites
 	public static final BufferedImage PLAYER = Loader.loadImage("/textures/sprites/player.png");
