@@ -16,6 +16,7 @@ public class Entity {
 	protected BufferedImage texture;
 	protected double x, y;
 	protected int width, height;
+	protected Direction facing;
 	protected double velX, velY;
 	protected double acceleration, breakForce, maxSpeed, jumpForce, gravity;
 	private boolean hasMoved, inAir;
@@ -26,6 +27,7 @@ public class Entity {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.facing = Direction.LEFT; 
 
 		// Setup variables for a default entity. Subclasses can change these
 		// later on in their own constructor.
@@ -78,7 +80,8 @@ public class Entity {
 		else {
 			System.err.println("Can't move entities in directions other than LEFT or RIGHT!");
 		}
-
+		
+		facing = dir;
 		hasMoved = true;
 	}
 
