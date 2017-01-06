@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 import se.wiklund.minecraft2d.graphics.Screen;
 import se.wiklund.minecraft2d.graphics.Window;
+import se.wiklund.minecraft2d.handler.FileHandler;
 import se.wiklund.minecraft2d.input.Keyboard;
 import se.wiklund.minecraft2d.input.Mouse;
 import se.wiklund.minecraft2d.menu.Menu;
@@ -30,13 +31,13 @@ public class Main {
 	private static State state;
 	
 	public static void start() {
-		window = new Window(true);
+		window = new Window(Settings.fullscreen);
 		screen = window.getScreen();
 		
 		updateCanvasSize();
 		
 		UIUtils.setGraphics((Graphics2D) screen.getGraphics());
-		if (!Settings.noSplash) {
+		if (Settings.splashScreen) {
 			setState(new SplashScreen());
 		} else {
 			setState(new Menu());
@@ -142,10 +143,7 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		for (int i = 0; i < args.length; i++) {
-			String arg = args[i];
-			if (arg.equalsIgnoreCase("-noSplash")) Settings.noSplash = true;
-		}
+		FileHandler.load();
 		start();
 	}
 }

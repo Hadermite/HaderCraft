@@ -21,10 +21,11 @@ public class PauseMenu {
 		this.game = game;
 		components = new ArrayList<Component>();
 		
-		int startX = 400;
+		int startY = 400;
+		int spaceY = 20 + Button.BTN_HEIGHT;
 		Label lblTitle = new Label("Paused", Assets.FONT_TITLE, 0, Label.TITLE_Y);
-		btnResume = new Button("Resume", 0, startX + 175 * 0);
-		btnMenu = new Button("Back to Menu", 0, startX + 175 * 1);
+		btnResume = new Button("Resume", 0, startY + spaceY * 0);
+		btnMenu = new Button("Back to Menu", 0, startY + spaceY * 1);
 		
 		lblTitle.centerX();
 		btnResume.centerX();

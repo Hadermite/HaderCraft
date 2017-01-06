@@ -1,12 +1,14 @@
 package se.wiklund.minecraft2d.game;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import se.wiklund.minecraft2d.Main;
 import se.wiklund.minecraft2d.State;
 import se.wiklund.minecraft2d.input.Keyboard;
+import se.wiklund.minecraft2d.menu.Settings;
 import se.wiklund.minecraft2d.types.BlockType;
 import se.wiklund.minecraft2d.util.blur.GaussianFilter;
 
@@ -43,13 +45,26 @@ public class Game extends State {
 		
 		if (Keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) {
 			if (!paused) {
-				BufferedImage screenshot = new BufferedImage(Main.WIDTH, Main.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+				final BufferedImage screenshot = new BufferedImage(Main.WIDTH, Main.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 				Graphics2D g = (Graphics2D) screenshot.getGraphics();
+				if (Settings.antiAliasing)
+					g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				
 				world.render(g);
 				hud.render(g);
 				
-				GaussianFilter blur = new GaussianFilter(5);
-				pausedBackground = blur.filter(screenshot, null);
+				pausedBackground = screenshot;
+				
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						long startTime = System.currentTimeMillis();
+						GaussianFilter blur = new GaussianFilter(5);
+						pausedBackground = blur.filter(screenshot, null);
+						System.out.println("Everything took " + (System.currentTimeMillis() - startTime) + " milliseconds to process");
+					}
+				}).start();
 			}
 			
 			paused = !paused;
