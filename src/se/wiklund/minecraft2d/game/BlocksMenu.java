@@ -51,7 +51,6 @@ public class BlocksMenu {
 		}
 	}
 	
-	int i = 0;
 	public void render(Graphics2D g) {
 		g.translate(X, Y);
 		g.setColor(Color.WHITE);
@@ -65,7 +64,6 @@ public class BlocksMenu {
 		mouse.setLocation(mouse.x - X, mouse.y - Y);
 		for (Component component : components) {
 			if (mouse.intersects(component.getBounds())) {
-				System.out.println("Intersection " + ++i);
 				if (component instanceof Button) {
 					if (component.getId() >= 100 &&component.getId() < 200) {
 						String name = blockTypes[component.getId() - 100].getName();
