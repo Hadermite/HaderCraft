@@ -92,7 +92,6 @@ public class BlocksMenu {
 			if (c.containsCoord(sx, sy)) {
 				if (c.getId() >= 100) {
 					game.setSelectedBlock(blockTypes[c.getId() - 100]);
-					game.updateHUD();
 					game.closeBlockMenu();
 				}
 			}

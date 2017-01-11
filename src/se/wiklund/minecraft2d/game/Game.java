@@ -13,22 +13,22 @@ import se.wiklund.minecraft2d.types.BlockType;
 import se.wiklund.minecraft2d.util.blur.GaussianFilter;
 
 public class Game extends State {
-	
-	private HUD hud;
+
+	private Sidebar sidebar;
 	private BlocksMenu blocksMenu;
 	private World world;
 	private PauseMenu pauseMenu;
-	private boolean paused, blocksMenuOpen;
+	private boolean renderSidebar, paused, blocksMenuOpen;
 	private BufferedImage pausedBackground;
 	private BlockType selectedBlock;
-	
+
 	public Game() {
-		hud = new HUD(this);
+		sidebar = new Sidebar(this);
 		blocksMenu = new BlocksMenu(this);
 		world = new World(this);
 		pauseMenu = new PauseMenu(this);
 	}
-	
+
 	public void tick() {
 		if (paused) {
 			pauseMenu.tick();
@@ -36,44 +36,54 @@ public class Game extends State {
 			blocksMenu.tick();
 		} else {
 			world.tick();
-			hud.tick();
 		}
-		
+		if (renderSidebar) {
+			sidebar.tick();
+		}
+
+		if (Keyboard.isKeyPressed(KeyEvent.VK_F3)) {
+			renderSidebar = !renderSidebar;
+		}
+
 		if (Keyboard.isKeyPressed(KeyEvent.VK_B) && !paused) {
 			blocksMenuOpen = !blocksMenuOpen;
 		}
-		
+
 		if (Keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) {
 			if (!paused) {
-				final BufferedImage screenshot = new BufferedImage(Main.WIDTH, Main.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+				final BufferedImage screenshot = new BufferedImage(Main.WIDTH, Main.HEIGHT,
+						BufferedImage.TYPE_INT_ARGB);
 				Graphics2D g = (Graphics2D) screenshot.getGraphics();
 				if (Settings.antiAliasing)
 					g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				
+
 				world.render(g);
-				hud.render(g);
-				
+				if (renderSidebar)
+					sidebar.render(g);
+
 				pausedBackground = screenshot;
-				
+
 				new Thread(new Runnable() {
-					
 					@Override
 					public void run() {
 						long startTime = System.currentTimeMillis();
 						GaussianFilter blur = new GaussianFilter(5);
 						pausedBackground = blur.filter(screenshot, null);
-						System.out.println("Everything took " + (System.currentTimeMillis() - startTime) + " milliseconds to process");
+						System.out.println("Everything took " + (System.currentTimeMillis() - startTime)
+								+ " milliseconds to process");
 					}
 				}).start();
 			}
-			
+
 			paused = !paused;
 		}
 	}
-	
+
 	public void render(Graphics2D g) {
 		world.render(g);
-		hud.render(g);
+		if (renderSidebar) {
+			sidebar.render(g);
+		}
 		if (blocksMenuOpen) {
 			blocksMenu.render(g);
 		}
@@ -91,41 +101,37 @@ public class Game extends State {
 			blocksMenu.onMouseClick(button, x, y);
 		} else {
 			world.onMouseClick(button, x, y);
-			
+
 			if (selectedBlock != null && button == 3) {
 				world.placeBlockScreen(selectedBlock, x, y);
 			}
 		}
 	}
-	
-	public void updateHUD() {
-		hud.tick();
-	}
-	
+
 	public World getWorld() {
 		return world;
 	}
-	
-	public HUD getHUD() {
-		return hud;
+
+	public Sidebar getSidebar() {
+		return sidebar;
 	}
-	
+
 	public boolean isPaused() {
 		return paused;
 	}
-	
+
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
-	
+
 	public BlockType getSelectedBlock() {
 		return selectedBlock;
 	}
-	
+
 	public void setSelectedBlock(BlockType selectedBlock) {
 		this.selectedBlock = selectedBlock;
 	}
-	
+
 	public void closeBlockMenu() {
 		blocksMenuOpen = false;
 	}

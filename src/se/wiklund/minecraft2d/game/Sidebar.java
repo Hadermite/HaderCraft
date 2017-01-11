@@ -10,7 +10,7 @@ import se.wiklund.minecraft2d.component.Component;
 import se.wiklund.minecraft2d.component.Label;
 import se.wiklund.minecraft2d.types.BlockType;
 
-public class HUD {
+public class Sidebar {
 	
 	private Game game;
 	private List<Component> components;
@@ -19,7 +19,7 @@ public class HUD {
 	private int lastTPS, lastFPS;
 	private BlockType selectedBlock;
 	
-	public HUD(Game game) {
+	public Sidebar(Game game) {
 		this.game = game;
 		components = new ArrayList<Component>();
 		

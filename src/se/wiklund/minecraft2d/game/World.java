@@ -38,7 +38,7 @@ public class World {
 		camera = new Camera();
 		screenBounds = new Rectangle();
 		coordFormat = new DecimalFormat("0.0");
-		lblPlayerCoords = game.getHUD().addSidebarRow("");
+		lblPlayerCoords = game.getSidebar().addSidebarRow("");
 
 		WorldUtils.setCamera(camera);
 
