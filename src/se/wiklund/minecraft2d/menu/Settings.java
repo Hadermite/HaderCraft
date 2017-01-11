@@ -15,48 +15,51 @@ import se.wiklund.minecraft2d.handler.FileHandler;
 import se.wiklund.minecraft2d.listener.CheckBoxListener;
 
 public class Settings extends State {
-	
+
 	public static boolean fullscreen = true;
 	public static boolean antiAliasing = true;
 	public static boolean splashScreen = true;
-	
+
 	public static boolean fullscreenChangeQueued = false;
-	
+
+	private static Settings lastInstance;
+
 	private List<Component> components;
-	
+
 	private Label lblTitle;
 	private CheckBox chkFullscreen, chkAA, chkSS;
 	private Button btnBack;
-	
+
 	public Settings() {
+		lastInstance = this;
 		components = new ArrayList<Component>();
-		
+
 		int spaceY = 20 + Assets.FONT_CHECKBOX.getSize();
 		lblTitle = new Label("Settings", Assets.FONT_TITLE, 0, Label.TITLE_Y);
 		chkFullscreen = new CheckBox("Fullscreen", 500, 250 + spaceY * 0);
 		chkAA = new CheckBox("Anti-Aliasing", 500, 250 + spaceY * 1);
 		chkSS = new CheckBox("Splash Screen", 500, 250 + spaceY * 2);
 		btnBack = new Button("Back", 0, Button.BTN_BACK_Y);
-		
+
 		lblTitle.centerX();
 		btnBack.centerX();
-		
+
 		chkFullscreen.setChecked(Main.getWindow().isFullscreen());
 		chkAA.setChecked(antiAliasing);
 		chkSS.setChecked(splashScreen);
-		
+
 		SettingsListener listener = new SettingsListener();
 		chkFullscreen.addListener(listener);
 		chkAA.addListener(listener);
 		chkSS.addListener(listener);
-		
+
 		components.add(lblTitle);
 		components.add(chkFullscreen);
 		components.add(chkAA);
 		components.add(chkSS);
 		components.add(btnBack);
 	}
-	
+
 	@Override
 	public void tick() {
 		for (Component component : components) {
@@ -79,11 +82,13 @@ public class Settings extends State {
 			}
 		}
 	}
-	
+
 	class SettingsListener implements CheckBoxListener {
 
 		@Override
 		public void onChangeValue(CheckBox box, boolean checked) {
+			if (lastInstance == null || Main.getState() != lastInstance)
+				return;
 			if (box == chkFullscreen && !fullscreenChangeQueued) {
 				fullscreenChangeQueued = true;
 				fullscreen = !Main.getWindow().isFullscreen();
