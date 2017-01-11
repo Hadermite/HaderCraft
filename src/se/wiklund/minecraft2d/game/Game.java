@@ -125,4 +125,8 @@ public class Game extends State {
 	public void setSelectedBlock(BlockType selectedBlock) {
 		this.selectedBlock = selectedBlock;
 	}
+	
+	public void closeBlockMenu() {
+		blocksMenuOpen = false;
+	}
 }

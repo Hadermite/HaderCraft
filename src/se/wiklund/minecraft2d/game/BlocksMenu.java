@@ -2,6 +2,7 @@ package se.wiklund.minecraft2d.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,9 @@ import se.wiklund.minecraft2d.component.Button;
 import se.wiklund.minecraft2d.component.Component;
 import se.wiklund.minecraft2d.component.Label;
 import se.wiklund.minecraft2d.game.block.Block;
+import se.wiklund.minecraft2d.input.Mouse;
 import se.wiklund.minecraft2d.types.BlockType;
+import se.wiklund.minecraft2d.util.UIUtils;
 
 public class BlocksMenu {
 	
@@ -48,6 +51,7 @@ public class BlocksMenu {
 		}
 	}
 	
+	int i = 0;
 	public void render(Graphics2D g) {
 		g.translate(X, Y);
 		g.setColor(Color.WHITE);
@@ -55,6 +59,28 @@ public class BlocksMenu {
 		
 		for (Component component : components) {
 			component.render(g);
+		}
+		
+		Rectangle mouse = (Rectangle) Mouse.getBounds().clone();
+		mouse.setLocation(mouse.x - X, mouse.y - Y);
+		for (Component component : components) {
+			if (mouse.intersects(component.getBounds())) {
+				System.out.println("Intersection " + ++i);
+				if (component instanceof Button) {
+					if (component.getId() >= 100 &&component.getId() < 200) {
+						String name = blockTypes[component.getId() - 100].getName();
+						int x = mouse.x + 25;
+						int y = mouse.y - 10;
+						int width = UIUtils.getStringWidth(name, Assets.FONT_SIDEBAR) + 40;
+						int height = Assets.FONT_SIDEBAR.getSize() + 20;
+						g.setColor(Color.GRAY);
+						g.fillRect(x, y, width, height);
+						g.setColor(Color.WHITE);
+						g.setFont(Assets.FONT_SIDEBAR);
+						g.drawString(name, x + 20, y + height - 16);
+					}
+				}
+			}
 		}
 		
 		g.translate(-X, -Y);
@@ -69,6 +95,7 @@ public class BlocksMenu {
 				if (c.getId() >= 100) {
 					game.setSelectedBlock(blockTypes[c.getId() - 100]);
 					game.updateHUD();
+					game.closeBlockMenu();
 				}
 			}
 		}

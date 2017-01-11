@@ -1,5 +1,6 @@
 package se.wiklund.minecraft2d.input;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -14,6 +15,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
 	private static double x, y;
 	private static boolean down;
+	private static Rectangle bounds = new Rectangle();
 	private static List<MouseReader> readers = new CopyOnWriteArrayList<MouseReader>();
 	
 	@Override
@@ -25,12 +27,14 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	public void mouseDragged(MouseEvent e) {
 		x = e.getX() / Main.scale;
 		y = e.getY() / Main.scale;
+		bounds.setBounds((int) x, (int) y, 1, 1);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		x = e.getX() / Main.scale;
 		y = e.getY() / Main.scale;
+		bounds.setBounds((int) x, (int) y, 1, 1);
 	}
 
 	@Override
@@ -80,5 +84,9 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	
 	public static void removeMouseReader(MouseReader reader) {
 		readers.remove(reader);
+	}
+	
+	public static Rectangle getBounds() {
+		return bounds;
 	}
 }
